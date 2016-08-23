@@ -4,14 +4,13 @@ var rev = require('gulp-rev');
 var revReplace = require('gulp-rev-replace');
 var mergeStream = require('merge-stream');
 var util = require('gulp-util');
+var minify = require('gulp-minify');
 var sourcemaps = require('gulp-sourcemaps');
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
-var uglify = require('uglify-js-harmony');
+var uglify = require('gulp-uglify');
 var del = require('del');
-
-var minifier = require('gulp-uglify/minifier');
 
 var _ = require('lodash');
 
@@ -41,7 +40,7 @@ function compileJS(file, name, opts) {
     .pipe(source(name))
     .pipe(buffer())
     .pipe(production ? util.noop() : sourcemaps.init())
-    .pipe(production ? minifier({}, uglify) : util.noop())
+    .pipe(production ? uglify() : util.noop())
     .pipe(production ? util.noop() : sourcemaps.write())
     .on("end", outputLog("Browserified:     " + file));
 }
