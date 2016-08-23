@@ -1,6 +1,6 @@
 {
   "name": "gulp-quintype",
-  "version": "1.0.0",
+  "version": "1.0.4",
   "description": "Gulp Tools for Quintype Apps",
   "main": "index.js",
   "scripts": {
