@@ -12,29 +12,31 @@ var buffer = require('vinyl-buffer');
 var uglify = require('gulp-uglify');
 var del = require('del');
 
+var _ = require('lodash');
+
 function outputLog(message) {
   return function() {
     util.log(message)
   };
 }
 
-function compileSass(file) {
+function compileSass(file, opts) {
   var production = !!util.env.production;
   return gulp.src(file)
     .pipe(production ? util.noop() : sourcemaps.init())
-    .pipe(sass({
+    .pipe(sass(_.extend({
       outputStyle: production ? 'compressed' : 'nested'
-    }).on("error", sass.logError))
+    }, opts)).on("error", sass.logError))
     .pipe(production ? util.noop() : sourcemaps.write())
     .on("end", outputLog("SASSified:        " + file));
 }
 
-function compileJS(file, name) {
+function compileJS(file, name, opts) {
   var production = !!util.env.production;
 
-  return browserify({
+  return browserify(_.extend({
     entries: file
-  }).bundle()
+  }, opts)).bundle()
     .pipe(source(name))
     .pipe(buffer())
     .pipe(production ? util.noop() : sourcemaps.init())
@@ -61,5 +63,7 @@ module.exports = {
   sass: compileSass,
   browserify: compileJS,
   merge: mergeStream,
-  files: files
+  files: files,
+  manifestAndWrite: manifestAndWrite,
+  log: outputLog
 };
