@@ -40,7 +40,7 @@ function compileJS(file, name, opts) {
     .pipe(source(name))
     .pipe(buffer())
     .pipe(production ? util.noop() : sourcemaps.init())
-    .pipe(production ? uglify() : util.noop())
+    .pipe(production ? uglify().on('error', console.error) : util.noop())
     .pipe(production ? util.noop() : sourcemaps.write())
     .on("end", outputLog("Browserified:     " + file));
 }
