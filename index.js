@@ -10,6 +10,7 @@ var browserify = require('browserify');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 var uglify = require('gulp-uglify');
+var babel = require('gulp-babel');
 var del = require('del');
 
 var _ = require('lodash');
@@ -40,6 +41,7 @@ function compileJS(file, name, opts) {
     .pipe(source(name))
     .pipe(buffer())
     .pipe(production ? util.noop() : sourcemaps.init())
+    .pipe(babel({presets: ['latest'], compact: false}))
     .pipe(production ? uglify() : util.noop())
     .pipe(production ? util.noop() : sourcemaps.write())
     .on("end", outputLog("Browserified:     " + file));
