@@ -1,5 +1,5 @@
 {
-  "name": "gulp-quintype",
+  "name": "quintype-gulp",
   "version": "1.1.2",
   "description": "Gulp Tools for Quintype Apps",
   "main": "index.js",
